@@ -3,13 +3,9 @@ from agent import extract_text_from_pdf, split_into_chunks, summarize_chunks_bat
 import tempfile
 import time
 
-st.set_page_config(page_title="🧠 Smart Note Summarizer", layout="centered")
+st.set_page_config(page_title="🧠 Smart PDF Summarizer", layout="centered")
 
-st.title("🧠 Smart Note Summarizer")
 st.write("Upload your PDF and get fast, batched AI-generated summaries using open-source LLMs.")
-
-st.title("🧠 Smart PDF Summarizer")
-
 st.markdown("### 📄 Upload your PDF file of 5MB")
 st.caption("⚠️ Max file size: **5MB** • Only PDF allowed")
 uploaded_file = st.file_uploader("", type=["pdf"])
