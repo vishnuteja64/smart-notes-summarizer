@@ -44,7 +44,7 @@ Summarize large PDFs into short and simple notes using open-source LLMs — depl
 
 ---
 
-## 🧠 Model Details
+## Model Details
 
 Model: [`Falconsai/text_summarization`](https://huggingface.co/Falconsai/text_summarization)  
 - Fast and lightweight CPU-friendly summarizer  
