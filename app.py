@@ -6,14 +6,14 @@ import time
 st.set_page_config(page_title=" Smart Note Summarizer", layout="centered")
 st.title(" Smart Note Summarizer")
 st.write("Upload your PDF and get fast, batched AI-generated summaries using open-source LLMs.")
-st.markdown("### 📄 Upload your PDF file of 5MB")
-st.caption("⚠️ Max file size: **5MB** • Only PDF allowed")
+st.markdown("### 📄 Upload your PDF file of 15MB")
+st.caption("⚠️ Max file size: **15MB** • Only PDF allowed")
 uploaded_file = st.file_uploader("", type=["pdf"])
 
 
 
 if uploaded_file is not None:
-    if uploaded_file.size > 5_000_000:
+    if uploaded_file.size > 15_000_000:
         st.error("❌ File too large. Please upload below 5MB.")
         st.stop()
 
