@@ -8,12 +8,12 @@ st.set_page_config(page_title="🧠 Smart Note Summarizer", layout="centered")
 st.title("🧠 Smart Note Summarizer")
 st.write("Upload your PDF and get fast, batched AI-generated summaries using open-source LLMs.")
 
-uploaded_file = st.file_uploader(
-    "📄 Upload your PDF file",
-    type=["pdf"],
-    label_visibility="visible",
-    help="Drag and drop PDF file here. Limit: 5MB"
-)
+st.title("🧠 Smart PDF Summarizer")
+
+st.markdown("### 📄 Upload your PDF file")
+st.caption("⚠️ Max file size: **5MB** • Only PDF allowed")
+uploaded_file = st.file_uploader("", type=["pdf"])
+
 
 
 if uploaded_file is not None:
