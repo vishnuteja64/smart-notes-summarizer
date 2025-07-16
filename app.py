@@ -1,47 +1,49 @@
 import streamlit as st
-from agent import extract_text_from_pdf, split_into_chunks, summarize_chunks
+from agent import extract_text_from_pdf, split_into_chunks, summarize_chunks_batch
 import tempfile
+import time
 
 st.set_page_config(page_title="🧠 Smart Note Summarizer", layout="centered")
 
 st.title("🧠 Smart Note Summarizer")
-st.write("Upload a large PDF and get a clean summary using Hugging Face Transformers.")
+st.write("Upload your PDF and get fast, batched AI-generated summaries using open-source LLMs.")
 
-# 📂 File Upload
-uploaded_file = st.file_uploader("📄 Upload your PDF file (Max: 10 MB)", type=["pdf"])
+uploaded_file = st.file_uploader("📄 Upload PDF file (Max 5MB)", type=["pdf"])
 
 if uploaded_file is not None:
-    if uploaded_file.size > 10_000_000:
-        st.error("❌ File too large. Please upload a file smaller than 10 MB.")
+    if uploaded_file.size > 5_000_000:
+        st.error("❌ File too large. Please upload below 5MB.")
         st.stop()
 
-    # Save file to temp path
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
         temp_file.write(uploaded_file.read())
         temp_path = temp_file.name
 
-    with st.spinner("🔍 Extracting text from PDF..."):
+    st.write("✅ File uploaded. Extracting text...")
+
+    try:
         text = extract_text_from_pdf(temp_path)
-        st.success(f"✅ Extracted {len(text)} characters from PDF.")
+        if not text.strip():
+            st.error("⚠️ No text found. Is this a scanned PDF?")
+            st.stop()
 
-    st.write("📖 Preview of extracted text (first 1000 characters):")
-    st.text(text[:1000])
+        st.success(f"Extracted {len(text)} characters.")
+        st.write("📖 Preview:")
+        st.text(text[:1000])
 
-    with st.spinner("🪓 Splitting text into chunks..."):
+        st.info("🪓 Splitting into chunks...")
         chunks = split_into_chunks(text, max_tokens=300)
         st.success(f"✅ Split into {len(chunks)} chunks.")
 
-    with st.spinner("🧠 Summarizing chunks (please wait)..."):
-        summaries = []
-        for i, chunk in enumerate(chunks):
-            st.write(f"🧠 Summarizing chunk {i + 1} of {len(chunks)}...")
-            try:
-                summary = summarize_chunks([chunk])
-                summaries.append(summary)
-            except Exception as e:
-                st.error(f"❌ Error summarizing chunk {i + 1}: {e}")
-        final_summary = "\n\n".join(summaries)
+        st.info("🧠 Summarizing in batch...")
+        start_time = time.time()
 
-    st.success("✅ Summary generation complete!")
-    st.subheader("📌 Final Summary")
-    st.write(final_summary)
+        summaries = summarize_chunks_batch(chunks, batch_size=4)
+        total_time = round(time.time() - start_time, 2)
+
+        st.success(f"✅ Summarization done in {total_time} seconds.")
+        st.subheader("📌 Final Summary")
+        st.write("\n\n".join(summaries))
+
+    except Exception as e:
+        st.error(f"❌ Error: {e}")
