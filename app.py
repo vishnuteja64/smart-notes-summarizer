@@ -10,7 +10,7 @@ st.write("Upload your PDF and get fast, batched AI-generated summaries using ope
 
 st.title("🧠 Smart PDF Summarizer")
 
-st.markdown("### 📄 Upload your PDF file")
+st.markdown("### 📄 Upload your PDF file of 5MB")
 st.caption("⚠️ Max file size: **5MB** • Only PDF allowed")
 uploaded_file = st.file_uploader("", type=["pdf"])
 
